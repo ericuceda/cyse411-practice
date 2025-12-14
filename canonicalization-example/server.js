@@ -52,7 +52,10 @@ app.post(
 // Vulnerable route (demo)
 app.post('/read-no-validate', (req, res) => {
   const filename = req.body.filename || '';
-  const joined = path.join(BASE_DIR, filename); // intentionally vulnerable
+  const joined = path.resolve(BASE_DIR, filename); // intentionally vulnerable
+  if (!joined.startsWith(BASE_DIR + path.sep)) {
+    throw new Error("blah blah blah");
+  }
   if (!fs.existsSync(joined)) return res.status(404).json({ error: 'File not found', path: joined });
   const content = fs.readFileSync(joined, 'utf8');
   res.json({ path: joined, content });
