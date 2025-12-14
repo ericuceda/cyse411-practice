@@ -7,5 +7,5 @@ const escapeHtml = s => s
 
 app.get('/search', (req, res) => {
   const q = escapeHtml(req.query.q || '');
-    res.render("Results for", {q: q});
+    res.send("Results for", {q: q});
 });
